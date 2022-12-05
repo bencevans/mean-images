@@ -17,19 +17,19 @@ fn main() {
             return None;
         };
 
-        let mut total_pixels: u32 = 0;
-        let mut total_red: u32 = 0;
-        let mut total_green: u32 = 0;
-        let mut total_blue: u32 = 0;
+        let mut total_pixels: f32 = 0.0;
+        let mut total_red: f32 = 0.0;
+        let mut total_green: f32 = 0.0;
+        let mut total_blue: f32 = 0.0;
 
         for (_, _, rgba) in img.pixels() {
-            total_pixels += 1;
-            total_red += rgba[0] as u32;
-            total_green += rgba[1] as u32;
-            total_blue += rgba[2] as u32;
+            total_pixels += 1.0;
+            total_red += rgba[0] as f32;
+            total_green += rgba[1] as f32;
+            total_blue += rgba[2] as f32;
         }
 
-        if total_pixels == 0 {
+        if total_pixels == 0.0 {
             return None;
         }
 
@@ -42,16 +42,16 @@ fn main() {
 
     let results = results.collect::<Vec<_>>();
 
-    let total_images = results.len();
+    let total_images = results.len() as f32;
 
     let mut avg_red: f32 = 0.0;
     let mut avg_green: f32 = 0.0;
     let mut avg_blue: f32 = 0.0;
 
     results.into_iter().for_each(|(r, g, b)| {
-        avg_red += r as f32 / total_images as f32;
-        avg_green += g as f32 / total_images as f32;
-        avg_blue += b as f32 / total_images as f32;
+        avg_red += r / total_images;
+        avg_green += g / total_images;
+        avg_blue += b / total_images;
     });
 
     println!("R: {} G: {} B: {}", avg_red, avg_green, avg_blue,);
