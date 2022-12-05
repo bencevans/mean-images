@@ -1,6 +1,4 @@
 use image::GenericImageView;
-use num_bigint::BigUint;
-use num_traits::Zero;
 use rayon::prelude::*;
 use std::path::PathBuf;
 use walkdir::WalkDir;
@@ -42,24 +40,19 @@ fn main() {
         Some((avg_red, avg_green, avg_blue))
     });
 
-    let mut total_red: BigUint = Zero::zero();
-    let mut total_green: BigUint = Zero::zero();
-    let mut total_blue: BigUint = Zero::zero();
-    let mut total_images: BigUint = Zero::zero();
+    let results = results.collect::<Vec<_>>();
 
-    results
-        .collect::<Vec<_>>()
-        .into_iter()
-        .for_each(|(r, g, b)| {
-            total_red += r;
-            total_green += g;
-            total_blue += b;
-            total_images += 1u32;
-        });
+    let total_images = results.len();
 
-    let avg_red = total_red / total_images.clone();
-    let avg_green = total_green / total_images.clone();
-    let avg_blue = total_blue / total_images;
+    let mut avg_red: f32 = 0.0;
+    let mut avg_green: f32 = 0.0;
+    let mut avg_blue: f32 = 0.0;
+
+    results.into_iter().for_each(|(r, g, b)| {
+        avg_red += r as f32 / total_images as f32;
+        avg_green += g as f32 / total_images as f32;
+        avg_blue += b as f32 / total_images as f32;
+    });
 
     println!("R: {} G: {} B: {}", avg_red, avg_green, avg_blue,);
 }
