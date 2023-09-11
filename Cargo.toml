@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 image = { version = "0.24.7", features = ["rgb"] }
 rayon = "1.7.0"
-walkdir = "2.3.3"
+walkdir = "2.4.0"
